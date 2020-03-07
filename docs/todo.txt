@@ -1,0 +1,12 @@
+Must haves:
+    Logging system
+    Health-checks
+    Swagger
+    Security provider
+    Versioned Routing
+Good to haves:
+    Request tracing 
+Polish:
+    Postman collection
+___
+Done:
