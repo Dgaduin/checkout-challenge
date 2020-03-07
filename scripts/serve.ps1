@@ -1,0 +1,1 @@
+dotnet run -p ./src/src.csproj --urls http://0.0.0.0:5000
