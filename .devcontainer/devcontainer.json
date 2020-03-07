@@ -1,0 +1,10 @@
+{
+    "name": ".Net Core builder",
+    "dockerFile": "../docker-images/Dockerfile.dev",
+    "forwardPorts": [
+        5000
+    ],
+    "settings": {
+        "terminal.integrated.shell.linux": "/bin/bash"
+    }
+}

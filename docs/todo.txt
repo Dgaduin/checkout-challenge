@@ -6,10 +6,10 @@ Must haves:
     Versioned Routing
     Create build image
     Create run image
-    Configure remote container for VS Code
 Good to haves:
     Request tracing 
 Polish:
     Postman collection
 ___
 Done:
+Configure remote container for VS Code
