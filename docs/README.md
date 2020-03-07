@@ -67,3 +67,5 @@ This project is to proved a payment gateway between different merchants and bank
 - The service's repository should include all the information on how to build, test and deploy the service
 
   - This includes build scripts and environment setup for both running and building (plain Docker images for this scenario, since it's relatively multi-platform and can plug in a lot of other systems)
+
+    - I opted for plain shell scripts for the build, since different CI/CD providers have their own configurations and the build is relatively straightforward. 

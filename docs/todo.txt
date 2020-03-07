@@ -6,6 +6,9 @@ Must haves:
     Versioned Routing
     Create build image
     Create run image
+    Build scripts
+    Serve scripts
+    Test scripts
 Good to haves:
     Request tracing 
 Polish:
