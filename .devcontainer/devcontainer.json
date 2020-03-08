@@ -4,6 +4,7 @@
     "forwardPorts": [
         5000
     ],
+    "postCreateCommand": "cd src && dotnet restore",
     "settings": {
         "terminal.integrated.shell.linux": "/bin/bash"
     },
