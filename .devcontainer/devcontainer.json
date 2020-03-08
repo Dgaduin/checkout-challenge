@@ -6,5 +6,12 @@
     ],
     "settings": {
         "terminal.integrated.shell.linux": "/bin/bash"
-    }
+    },
+    "extensions": [
+        "ms-dotnettools.csharp",
+        "jmrog.vscode-nuget-package-manager",
+        "streetsidesoftware.code-spell-checker",
+        "esbenp.prettier-vscode",
+        "pflannery.vscode-versionlens"
+    ]
 }
