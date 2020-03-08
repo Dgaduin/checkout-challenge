@@ -1,1 +1,1 @@
-dotnet build ./src/src.csproj 
+dotnet build ./src/CheckoutChallenge.csproj 

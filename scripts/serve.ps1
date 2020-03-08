@@ -1,1 +1,1 @@
-dotnet run -p ./src/src.csproj --urls http://0.0.0.0:5000
+dotnet run -p ./src/CheckoutChallenge.csproj --urls http://0.0.0.0:5000

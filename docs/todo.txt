@@ -1,7 +1,4 @@
 Must haves:
-    Logging system
-    Health-checks
-    Swagger
     Security provider
     Versioned Routing
     Create build image
@@ -16,3 +13,7 @@ Done:
     Configure remote container for VS Code
     Build scripts
     Serve scripts
+    Logging system
+    Health-checks
+    Swagger
+    Add controller stub
