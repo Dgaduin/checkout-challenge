@@ -8,6 +8,7 @@ Good to haves:
     Request tracing 
 Polish:
     Postman collection
+    Add card type to CardNumber value object
 ___
 Done:
     Configure remote container for VS Code

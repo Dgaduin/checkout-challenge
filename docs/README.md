@@ -9,6 +9,7 @@ This project is to proved a payment gateway between different merchants and bank
 
 - The merchant service is external to the payment gateway (foreign system)
 - There is a single bank endpoint to call to process a payment, probably a WebAPI part of our internal systems
+- 3D security won't be required
 
 ## Technical considerations
 
