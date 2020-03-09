@@ -13,6 +13,7 @@
         "jmrog.vscode-nuget-package-manager",
         "streetsidesoftware.code-spell-checker",
         "esbenp.prettier-vscode",
-        "pflannery.vscode-versionlens"
+        "pflannery.vscode-versionlens",
+        "dotjoshjohnson.xml"
     ]
 }

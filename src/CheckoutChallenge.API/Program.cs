@@ -4,7 +4,7 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
 
-namespace CheckoutChallenge
+namespace CheckoutChallenge.API
 {
     public static class Program
     {

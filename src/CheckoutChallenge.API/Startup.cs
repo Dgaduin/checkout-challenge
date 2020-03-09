@@ -1,3 +1,4 @@
+using CheckoutChallenge.Domain.PaymentAggregate.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -5,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 
-namespace CheckoutChallenge
+namespace CheckoutChallenge.API
 {
     public class Startup
     {
@@ -21,6 +22,7 @@ namespace CheckoutChallenge
             services.AddHealthChecks();
             services.AddControllers();
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" }));
+            services.AddScoped<IPaymentProcessorService, PaymentProcessorService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

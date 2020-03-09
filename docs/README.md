@@ -8,9 +8,7 @@ This project is to proved a payment gateway between different merchants and bank
 ## Assumptions made
 
 - The merchant service is external to the payment gateway (foreign system)
-- The acquiring bank is external to the payment gateway
-- There are multiple banks, or if not, there will be at some point in the future
-- The banks are not proxied by another service on the internal network - not a recommended scenario, because it creates a tight two-directional coupling, and if anything else needs to communicate with the banks, this might introduce additional responsibilities to this service. The decision is made as a thought exercise and to introduce some complexity to be abstracted
+- There is a single bank endpoint to call to process a payment, probably a WebAPI part of our internal systems
 
 ## Technical considerations
 
@@ -69,3 +67,7 @@ This project is to proved a payment gateway between different merchants and bank
   - This includes build scripts and environment setup for both running and building (plain Docker images for this scenario, since it's relatively multi-platform and can plug in a lot of other systems)
 
     - I opted for plain shell scripts for the build, since different CI/CD providers have their own configurations and the build is relatively straightforward.
+
+- The system will follow DDD principles to keep it open for extension and for a better fit into a microservice environment
+  - It won't use an internal CQRS pattern(like MediatR) to handle domain events, due to the small size of the domain and the complexity of such a setup, but will abstract domain behavior behind a domain service, to allow for future split if necessary
+  - External CQRS will remain an option, behind the repository interfaces
