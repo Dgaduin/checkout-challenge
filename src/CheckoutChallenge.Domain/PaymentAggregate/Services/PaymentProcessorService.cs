@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 
 namespace CheckoutChallenge.Domain.PaymentAggregate.Services
 {
+    // This looks like a good candidate for the default interface implementation feature
     public class PaymentProcessorService : IPaymentProcessorService
     {
         private readonly ICurrencySupportedService _currencyService;
@@ -15,9 +16,9 @@ namespace CheckoutChallenge.Domain.PaymentAggregate.Services
             IPaymentRepository paymentRepository
         )
         {
-            _currencyService = currencyService ?? throw new ArgumentNullException(nameof(currencyService)); ;
-            _paymentSenderService = paymentSenderService ?? throw new ArgumentNullException(nameof(paymentSenderService)); ;
-            _paymentRepository = paymentRepository ?? throw new ArgumentNullException(nameof(paymentRepository)); ;
+            _currencyService = currencyService ?? throw new ArgumentNullException(nameof(currencyService));
+            _paymentSenderService = paymentSenderService ?? throw new ArgumentNullException(nameof(paymentSenderService));
+            _paymentRepository = paymentRepository ?? throw new ArgumentNullException(nameof(paymentRepository));
         }
 
         public async Task<Guid> ProcessPayment(Payment payment)
@@ -27,9 +28,12 @@ namespace CheckoutChallenge.Domain.PaymentAggregate.Services
 
             var isCurrencySupported = await _currencyService.IsCurrencySupported(payment.Currency);
             if (!isCurrencySupported)
-                throw new PaymentAggregateException();
+                throw new PaymentAggregateException($"Currency {payment.Currency} is not supported");
 
             var paymentStatus = await _paymentSenderService.SendPayment(payment);
+            if (paymentStatus == PaymentStatus.ServiceError)
+                throw new PaymentAggregateException("There was in issue with the calling bank");
+
             var updatedPayment = payment.UpdateStatus(paymentStatus);
 
             _paymentRepository.Add(updatedPayment);
