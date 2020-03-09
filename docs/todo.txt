@@ -9,6 +9,7 @@ Good to haves:
 Polish:
     Postman collection
     Add card type to CardNumber value object
+    Add address to payment
 ___
 Done:
     Configure remote container for VS Code
@@ -18,3 +19,4 @@ Done:
     Health-checks
     Swagger
     Add controller stub
+    Card Number Value Object
