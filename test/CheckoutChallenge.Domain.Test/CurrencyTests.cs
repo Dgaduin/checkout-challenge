@@ -10,7 +10,7 @@ namespace CheckoutChallenge.Domain.Test
         [Fact]
         public void ValueIsNull()
         {
-            Action a = () => new CardNumber(null);
+            Action a = () => new Currency(null);
             a.Should().ThrowExactly<ArgumentNullException>();
         }
 
@@ -20,7 +20,7 @@ namespace CheckoutChallenge.Domain.Test
         [InlineData("12345")]
         public void LengthNotThree(string currency)
         {
-            Action a = () => new CardNumber(currency);
+            Action a = () => new Currency(currency);
             a.Should().ThrowExactly<PaymentAggregateException>();
         }
 
@@ -31,8 +31,19 @@ namespace CheckoutChallenge.Domain.Test
         [InlineData("SDЪ")]
         public void NotOnlyCapitalLetters(string currency)
         {
-            Action a = () => new CardNumber(currency);
+            Action a = () => new Currency(currency);
             a.Should().ThrowExactly<PaymentAggregateException>();
+        }
+
+        [Theory]
+        [InlineData("USD")]
+        [InlineData("GBP")]
+        [InlineData("BGN")]
+        [InlineData("CND")]
+        public void ValidCurrencies(string currency)
+        {
+            Action a = () => new Currency(currency);
+            a.Should().NotThrow();
         }
     }
 }
