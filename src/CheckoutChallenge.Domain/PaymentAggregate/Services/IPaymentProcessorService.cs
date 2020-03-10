@@ -5,6 +5,6 @@ namespace CheckoutChallenge.Domain.PaymentAggregate.Services
 {
     public interface IPaymentProcessorService
     {
-        Task<Guid> ProcessPayment(Payment payment);
+        Task<Payment> ProcessPayment(Payment payment);
     }
 }

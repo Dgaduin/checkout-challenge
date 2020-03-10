@@ -21,7 +21,7 @@ namespace CheckoutChallenge.Domain.PaymentAggregate.Services
             _paymentRepository = paymentRepository ?? throw new ArgumentNullException(nameof(paymentRepository));
         }
 
-        public async Task<Guid> ProcessPayment(Payment payment)
+        public async Task<Payment> ProcessPayment(Payment payment)
         {
             if (payment is null)
                 throw new ArgumentNullException(nameof(payment));
@@ -37,8 +37,8 @@ namespace CheckoutChallenge.Domain.PaymentAggregate.Services
             var updatedPayment = payment.UpdateStatus(paymentStatus);
 
             _paymentRepository.Add(updatedPayment);
-            var paymentId = await _paymentRepository.UnitOfWork.SaveChangesAsync().ConfigureAwait(false);
-            return paymentId;
+            await _paymentRepository.UnitOfWork.SaveChangesAsync().ConfigureAwait(false);
+            return updatedPayment;
         }
     }
 }
