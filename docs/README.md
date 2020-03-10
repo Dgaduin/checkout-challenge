@@ -5,10 +5,19 @@ This project is to proved a payment gateway between different merchants and bank
 1. Processing payments (forwarding them to the appropriate bank)
 2. Retrieving payment details
 
+## Building
+TBA
+
+## Testing
+TBA
+
+## Publishing
+TBA
+
 ## Assumptions made
 
 - The merchant service is external to the payment gateway (foreign system)
-- There is a single bank endpoint to call to process a payment, probably a WebAPI part of our internal systems
+- The bank service is abstracted behind an interface - can be network wide, like an API or just in internal to this service and has a mechanism to resolve between multiple providers
 - 3D security won't be required
 
 ## Technical considerations
