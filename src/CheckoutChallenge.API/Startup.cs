@@ -1,31 +1,84 @@
-using CheckoutChallenge.Domain.PaymentAggregate.Services;
+using System;
+using System.IO;
+using System.Reflection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
+using Microsoft.Extensions.Options;
+using Microsoft.Extensions.PlatformAbstractions;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace CheckoutChallenge.API
 {
+    /// <summary>
+    /// Represents the startup process for the application.
+    /// </summary>
     public class Startup
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Startup"/> class.
+        /// </summary>
+        /// <param name="configuration">The current configuration.</param>
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
+        /// <summary>
+        /// Gets the current configuration.
+        /// </summary>
+        /// <value>The current application configuration.</value>
         public IConfiguration Configuration { get; }
 
+        /// <summary>
+        /// Configures services for the application.
+        /// </summary>
+        /// <param name="services">The collection of services to configure the application with.</param>
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddHealthChecks();
             services.AddControllers();
-            services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" }));
-            services.AddScoped<IPaymentProcessorService, PaymentProcessorService>();
+
+            // reporting api versions will return the headers "api-supported-versions" and "api-deprecated-versions"
+            services.AddApiVersioning(options =>
+            {
+                options.AssumeDefaultVersionWhenUnspecified = true;
+                options.DefaultApiVersion = new ApiVersion(1, 0);
+                options.ReportApiVersions = true;
+                options.ApiVersionReader = new HeaderApiVersionReader("API-VERSION");
+            });
+
+            // add the versioned api explorer, which also adds IApiVersionDescriptionProvider service
+            // note: the specified format code will format the version as "'v'major[.minor][-status]"
+            services.AddVersionedApiExplorer(options => options.GroupNameFormat = "'v'VVV");
+
+            services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
+
+            services.AddSwaggerGen(
+                options =>
+                {
+                    // add a custom operation filter which sets default values
+                    options.OperationFilter<SwaggerDefaultValues>();
+
+                    // integrate xml comments
+                    options.IncludeXmlComments(XmlCommentsFilePath);
+                });
+
+            //services.AddScoped<IPaymentProcessorService, PaymentProcessorService>();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        /// <summary>
+        /// Configures the application using the provided builder, hosting environment, and API version description provider.
+        /// </summary>
+        /// <param name="app">The current application builder.</param>
+        /// <param name="env">The current environment value </param>
+        /// <param name="provider">The API version descriptor provider used to enumerate defined API versions.</param>
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider provider)
         {
             if (env.IsDevelopment())
             {
@@ -39,14 +92,35 @@ namespace CheckoutChallenge.API
             app.UseAuthorization();
 
             app.UseSwagger();
+            foreach (var description in provider.ApiVersionDescriptions)
+            {
+                Console.WriteLine(description.ApiVersion);
+                Console.WriteLine(description.GroupName);
+            }
 
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1"));
+            app.UseSwaggerUI(options =>
+              {
+                  foreach (var description in provider.ApiVersionDescriptions)
+                  {
+                      options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
+                  }
+              });
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHealthChecks("/health");
                 endpoints.MapControllers();
             });
+        }
+
+        private static string XmlCommentsFilePath
+        {
+            get
+            {
+                var basePath = PlatformServices.Default.Application.ApplicationBasePath;
+                var fileName = typeof(Startup).GetTypeInfo().Assembly.GetName().Name + ".xml";
+                return Path.Combine(basePath, fileName);
+            }
         }
     }
 }
