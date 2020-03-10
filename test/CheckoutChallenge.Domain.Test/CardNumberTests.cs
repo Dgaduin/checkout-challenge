@@ -5,8 +5,15 @@ using FluentAssertions;
 
 namespace CheckoutChallenge.Domain.Test
 {
-    public class CreditCardTests
+    public class CardNumberTests
     {
+        [Fact]
+        public void ValueIsNull()
+        {
+            Action a = () => new CardNumber(null);
+            a.Should().ThrowExactly<ArgumentNullException>();
+        }
+
         [Fact]
         public void NumberIsTooShort()
         {

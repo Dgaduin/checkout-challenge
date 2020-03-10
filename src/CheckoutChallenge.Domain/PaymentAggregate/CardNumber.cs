@@ -46,7 +46,7 @@ namespace CheckoutChallenge.Domain.PaymentAggregate
 
         private static bool OnlyNumeric(string cardNumber)
         {
-            Regex r = new Regex("^[Z0-9]*$");
+            Regex r = new Regex("^[0-9]*$");
             return r.IsMatch(cardNumber);
         }
     }
