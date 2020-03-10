@@ -11,13 +11,13 @@ namespace CheckoutChallenge.Domain.SeedWork
             {
                 return false;
             }
+            // either both will be null and we will exit or none will be null
+#pragma warning disable 8604
             return ReferenceEquals(left, null) || left.Equals(right);
+#pragma warning restore 8604
         }
 
-        protected static bool NotEqualOperator(ValueObject left, ValueObject right)
-        {
-            return !(EqualOperator(left, right));
-        }
+        protected static bool NotEqualOperator(ValueObject left, ValueObject right) => !(EqualOperator(left, right));
 
         protected abstract IEnumerable<object> GetAtomicValues();
 
@@ -44,16 +44,11 @@ namespace CheckoutChallenge.Domain.SeedWork
             return !thisValues.MoveNext() && !otherValues.MoveNext();
         }
 
-        public override int GetHashCode()
-        {
-            return GetAtomicValues()
-             .Select(x => x != null ? x.GetHashCode() : 0)
-             .Aggregate((x, y) => x ^ y);
-        }
+        public override int GetHashCode() =>
+            GetAtomicValues()
+                .Select(x => x != null ? x.GetHashCode() : 0)
+                .Aggregate((x, y) => x ^ y);
 
-        public ValueObject GetCopy()
-        {
-            return this.MemberwiseClone() as ValueObject;
-        }
+        public ValueObject? GetCopy() => MemberwiseClone() as ValueObject;
     }
 }
