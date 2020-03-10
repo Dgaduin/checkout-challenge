@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using CheckoutChallenge.Domain.SeedWork;
 
-namespace CheckoutChallenge.Domain.PaymentAggregate
+namespace CheckoutChallenge.Domain.PaymentAggregate.Services
 {
     public interface IPaymentRepository : IRepository<Payment>
     {
