@@ -81,3 +81,9 @@ TBA
 - The system will follow DDD principles to keep it open for extension and for a better fit into a microservice environment
   - It won't use an internal CQRS pattern(like MediatR) to handle domain events, due to the small size of the domain and the complexity of such a setup, but will abstract domain behavior behind a domain service, to allow for future split if necessary
   - External CQRS will remain an option, behind the repository interfaces
+
+## Things to improve
+- More specific exceptions for easier handling
+- Use different validation system than just exceptions
+- Rename the tests and use something like Specflow to define the behaviour of the domain
+- Some of the tests might fail under a devil's advocate process
