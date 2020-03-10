@@ -29,7 +29,7 @@ namespace CheckoutChallenge.Domain.PaymentAggregate
 
         private static bool OnlyCapitalLetters(string cardNumber)
         {
-            Regex r = new Regex("^[A-Z]*$");
+            Regex r = new Regex("^[A-Z]*$", RegexOptions.None, TimeSpan.FromSeconds(1));
             return r.IsMatch(cardNumber);
         }
     }

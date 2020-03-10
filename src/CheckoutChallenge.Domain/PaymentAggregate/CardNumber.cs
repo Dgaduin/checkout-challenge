@@ -7,7 +7,7 @@ namespace CheckoutChallenge.Domain.PaymentAggregate
 {
     public class CardNumber : ValueObject
     {
-        //TODO We can add card type as well
+        // We can add card type as well
         public string Value { get; private set; }
         public CardNumber(string value)
         {
@@ -46,7 +46,7 @@ namespace CheckoutChallenge.Domain.PaymentAggregate
 
         private static bool OnlyNumeric(string cardNumber)
         {
-            Regex r = new Regex("^[0-9]*$");
+            Regex r = new Regex("^[0-9]*$", RegexOptions.None, TimeSpan.FromSeconds(1));
             return r.IsMatch(cardNumber);
         }
     }

@@ -26,18 +26,18 @@ namespace CheckoutChallenge.Domain.PaymentAggregate.Services
             if (payment is null)
                 throw new ArgumentNullException(nameof(payment));
 
-            var isCurrencySupported = await _currencyService.IsCurrencySupported(payment.Currency);
+            var isCurrencySupported = await _currencyService.IsCurrencySupported(payment.Currency).ConfigureAwait(false);
             if (!isCurrencySupported)
                 throw new PaymentAggregateException($"Currency {payment.Currency} is not supported");
 
-            var paymentStatus = await _paymentSenderService.SendPayment(payment);
+            var paymentStatus = await _paymentSenderService.SendPayment(payment).ConfigureAwait(false);
             if (paymentStatus == PaymentStatus.ServiceError)
                 throw new PaymentAggregateException("There was in issue with the calling bank");
 
             var updatedPayment = payment.UpdateStatus(paymentStatus);
 
             _paymentRepository.Add(updatedPayment);
-            var paymentId = await _paymentRepository.UnitOfWork.SaveChangesAsync();
+            var paymentId = await _paymentRepository.UnitOfWork.SaveChangesAsync().ConfigureAwait(false);
             return paymentId;
         }
     }
