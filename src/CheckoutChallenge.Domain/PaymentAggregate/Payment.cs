@@ -48,12 +48,22 @@ namespace CheckoutChallenge.Domain.PaymentAggregate
 
             if (nameOnCard is null)
                 throw new ArgumentNullException(nameof(nameOnCard));
+            if (string.IsNullOrWhiteSpace(nameOnCard))
+                throw new ArgumentException("Name is empty", nameof(nameOnCard));
+
             NameOnCard = nameOnCard;
 
             if (cvv is null)
                 throw new ArgumentNullException(nameof(cvv));
+            if (string.IsNullOrWhiteSpace(cvv))
+                throw new ArgumentException("CVV is empty", nameof(cvv));
+
             CVV = cvv;
 
+            if (merchantId is null)
+                throw new ArgumentNullException(nameof(merchantId));
+            if (string.IsNullOrWhiteSpace(merchantId))
+                throw new ArgumentException("MerchantId is empty", nameof(merchantId));
             if (Guid.TryParse(merchantId, out var guid))
                 MerchantId = guid;
             else
