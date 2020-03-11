@@ -1,6 +1,7 @@
 using System;
 using CheckoutChallenge.Domain.PaymentAggregate.Services;
 using CheckoutChallenge.Models.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -9,6 +10,7 @@ namespace CheckoutChallenge.API.Controllers
     [ApiController]
     [ApiVersion("1.0")]
     [Route("[controller]")]
+    [Authorize]
     public class PaymentController : ControllerBase
     {
         private readonly ILogger<PaymentController> _logger;
@@ -21,9 +23,13 @@ namespace CheckoutChallenge.API.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(200)]
         public IActionResult GetPayment(Guid id) => Ok("test");
 
         [HttpPost]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(200)]
         public IActionResult MakePayment([FromBody]PaymentRequestDTO request) => Ok();
     }
 }

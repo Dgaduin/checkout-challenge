@@ -13,14 +13,13 @@ namespace CheckoutChallenge.Infrastructure.Security
             {"thisIsKey4",new Guid("F8876D21-FC27-4BC6-9DB9-5252AF00FD87")}
         };
 
-        public Task<bool> IsKeyValid(string apiKey, Guid merchantId)
+        public Task<Guid?> GetMerchantFromApiKey(string apiKey)
         {
             if (_merchantKeys.TryGetValue(apiKey, out Guid id))
             {
-                if (id == merchantId)
-                    return Task.FromResult(true);
+                return Task.FromResult<Guid?>(id);
             }
-            return Task.FromResult(false);
+            return Task.FromResult<Guid?>(null);
         }
     }
 }

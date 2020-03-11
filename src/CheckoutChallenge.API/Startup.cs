@@ -1,6 +1,8 @@
 using System;
 using System.IO;
 using System.Reflection;
+using CheckoutChallenge.API.Services.Security;
+using CheckoutChallenge.Infrastructure.Security;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.PlatformAbstractions;
+using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace CheckoutChallenge.API
@@ -41,6 +44,12 @@ namespace CheckoutChallenge.API
         /// <param name="services">The collection of services to configure the application with.</param>
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication(options =>
+                {
+                    options.AddScheme<ApiKeyAuthenticationHandler>("ApiKeyScheme", "ApiKeyScheme");
+                    options.DefaultScheme = "ApiKeyScheme";
+                });
+
             services.AddHealthChecks();
             services.AddControllers();
 
@@ -50,7 +59,7 @@ namespace CheckoutChallenge.API
                 options.AssumeDefaultVersionWhenUnspecified = true;
                 options.DefaultApiVersion = new ApiVersion(1, 0);
                 options.ReportApiVersions = true;
-                options.ApiVersionReader = new HeaderApiVersionReader("API-VERSION");
+                options.ApiVersionReader = new HeaderApiVersionReader("Api-Version");
             });
 
             // add the versioned api explorer, which also adds IApiVersionDescriptionProvider service
@@ -67,8 +76,17 @@ namespace CheckoutChallenge.API
 
                     // integrate xml comments
                     options.IncludeXmlComments(XmlCommentsFilePath);
-                });
 
+                    options.AddSecurityDefinition("ApiBearerHeader",
+                        new OpenApiSecurityScheme
+                        {
+                            In = ParameterLocation.Header,
+                            Description = "Use the key provided during onboarding",
+                            Type = SecuritySchemeType.ApiKey,
+                            Name = "Api-Key",
+                        });
+                });
+            services.AddScoped<ISecurityProvider, MockSecurityProvider>();
             //services.AddScoped<IPaymentProcessorService, PaymentProcessorService>();
         }
 

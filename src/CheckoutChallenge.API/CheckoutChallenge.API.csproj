@@ -17,5 +17,6 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0" />
 
     <ProjectReference Include="..\CheckoutChallenge.Domain\CheckoutChallenge.Domain.csproj" />
+    <ProjectReference Include="..\CheckoutChallenge.Infrastructure\CheckoutChallenge.Infrastructure.csproj" />
   </ItemGroup>
 </Project>

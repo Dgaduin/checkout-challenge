@@ -5,6 +5,6 @@ namespace CheckoutChallenge.Infrastructure.Security
 {
     public interface ISecurityProvider
     {
-        Task<bool> IsKeyValid(string apiKey, Guid merchantId);
+        Task<Guid?> GetMerchantFromApiKey(string apiKey);
     }
 }
