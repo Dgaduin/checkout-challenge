@@ -1,9 +1,6 @@
 Must haves:
-    Security provider
-    Versioned Routing
     Create build image
     Create run image
-    Test scripts
 Good to haves:
     Request tracing 
 Polish:
@@ -21,3 +18,6 @@ Done:
     Add controller stub
     Card Number Value Object
     Currency Value Object
+    Security provider
+    Test scripts
+    Versioned Routing

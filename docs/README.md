@@ -6,13 +6,35 @@ This project is to proved a payment gateway between different merchants and bank
 2. Retrieving payment details
 
 ## Building
-TBA
+
+Run `scripts/build.sh(ps1)`
 
 ## Testing
-TBA
+
+### Unit tests
+
+Run `scripts/test.sh(ps1)`
+
+### Run and test simulator
+
+Run `scripts/serve.sh(ps1)` and visit the `/swagger/` endpoint on the url from the console
+
+Use `thisIsKey1` for the authentication key
+
+Use `B75D838E-E7B0-4B7B-BDA3-1903008085E6` for the MerchantId field in MakePayment endpoint
+
+The simulator will generate different statuses based on the Mod10/2 of the amount
+|Mod10/2|Status|
+|-------|------|
+|0 |Success|
+|1 |DetailsNotRecognised|
+|2 |Denied|
+|3 |InsufficientFunds|
+|5 |ServiceError|
 
 ## Publishing
-TBA
+
+Run `scripts/build-docker.sh(ps1)` and run the image - the app exposes ports `5000` and `5001` for http and https respectively
 
 ## Assumptions made
 
@@ -83,7 +105,20 @@ TBA
   - External CQRS will remain an option, behind the repository interfaces
 
 ## Things to improve
+
 - More specific exceptions for easier handling
 - Use different validation system than just exceptions
 - Rename the tests and use something like Specflow to define the behaviour of the domain
+- Introduces additional entities like Merchant
 - Some of the tests might fail under a devil's advocate process
+- Corelate the api key with the merchantId for a proper authz flow
+- An actual data store which can be included in the Docker image instead of the in-memory provider
+- Maybe move some of the services around
+- Provide proper XML docs across the board
+- Don't store all the payment data in the DB - like CVV
+- Look into in-memory encryption for the card number and CVV while processing - it's less than a second but memory sniffing attacks for GC languages are relatively well known
+- Enhance the HealthCheck endpoint to report on 3rd part availabilities
+- Add more unit tests
+- Data storage remains open ended since the scope of the service can vary huge amounts, probably a relational DB which supports encrypted columns and at rest encryption will be something that can fit most scenarios. Support for sharding, multi-tenancy and geo splitting are additional plusses.
+- Produce a SDK to integrate against the API
+- Performance loads would be mostly network related in this scenario, but having some data to back it up would be good in prod
