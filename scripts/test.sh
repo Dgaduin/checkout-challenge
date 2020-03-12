@@ -1,0 +1,1 @@
+dotnet test ./test/CheckoutChallenge.Domain.Test/CheckoutChallenge.Domain.Test.csproj
