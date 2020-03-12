@@ -1,7 +1,8 @@
 using System;
 using System.IO;
 using System.Reflection;
-using CheckoutChallenge.API.Services.Security;
+using CheckoutChallenge.API.Services;
+using CheckoutChallenge.Domain.PaymentAggregate.Services;
 using CheckoutChallenge.Infrastructure.Security;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -15,6 +16,9 @@ using Microsoft.Extensions.Options;
 using Microsoft.Extensions.PlatformAbstractions;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using Microsoft.EntityFrameworkCore;
+using CheckoutChallenge.Infrastructure.Data;
+using System.Collections.Generic;
 
 namespace CheckoutChallenge.API
 {
@@ -77,7 +81,7 @@ namespace CheckoutChallenge.API
                     // integrate xml comments
                     options.IncludeXmlComments(XmlCommentsFilePath);
 
-                    options.AddSecurityDefinition("ApiBearerHeader",
+                    options.AddSecurityDefinition("Api-Key",
                         new OpenApiSecurityScheme
                         {
                             In = ParameterLocation.Header,
@@ -85,9 +89,27 @@ namespace CheckoutChallenge.API
                             Type = SecuritySchemeType.ApiKey,
                             Name = "Api-Key",
                         });
+                    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+                    {
+                        {
+                            new OpenApiSecurityScheme
+                            {
+                            Reference = new OpenApiReference {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Api-Key",
+                                 },
+                        }, new List<string>()
+                        },
+                    });
+                    options.OperationFilter<AddAuthHeaderOperationFilter>();
                 });
             services.AddScoped<ISecurityProvider, MockSecurityProvider>();
-            //services.AddScoped<IPaymentProcessorService, PaymentProcessorService>();
+            services.AddTransient<IDataService, DataService>();
+            services.AddTransient<IPaymentProcessorService, PaymentProcessorService>();
+            services.AddTransient<IPaymentSenderService, MockPaymentSenderService>();
+            services.AddTransient<ICurrencySupportedService, MockCurrencySupportedService>();
+            services.AddTransient<IPaymentRepository, PaymentRepository>();
+            services.AddDbContext<PaymentDbContext>(options => options.UseInMemoryDatabase("PaymentsTestDatabase"));
         }
 
         /// <summary>
@@ -107,14 +129,10 @@ namespace CheckoutChallenge.API
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseSwagger();
-            foreach (var description in provider.ApiVersionDescriptions)
-            {
-                Console.WriteLine(description.ApiVersion);
-                Console.WriteLine(description.GroupName);
-            }
 
             app.UseSwaggerUI(options =>
               {

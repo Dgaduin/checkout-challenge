@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Http;
 using System;
 using CheckoutChallenge.Infrastructure.Security;
 
-namespace CheckoutChallenge.API.Services.Security
+namespace CheckoutChallenge.API.Services
 {
     public class ApiKeyAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
     {

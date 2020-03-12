@@ -5,7 +5,7 @@ using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System;
 
-namespace CheckoutChallenge.API
+namespace CheckoutChallenge.API.Services
 {
 
     /// <summary>
