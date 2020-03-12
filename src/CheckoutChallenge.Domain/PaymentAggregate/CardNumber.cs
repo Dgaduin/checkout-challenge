@@ -9,6 +9,10 @@ namespace CheckoutChallenge.Domain.PaymentAggregate
     {
         // We can add card type as well
         public string Value { get; private set; }
+
+        public string LastFourDigits => Value.Substring(Value.Length - 4);
+
+        private CardNumber() { }
         public CardNumber(string value)
         {
             if (value is null)

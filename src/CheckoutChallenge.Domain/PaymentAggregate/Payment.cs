@@ -8,7 +8,7 @@ namespace CheckoutChallenge.Domain.PaymentAggregate
     {
         public Currency Currency { get; private set; }
 
-        public PaymentStatus? PaymentStatus { get; private set; }
+        public PaymentStatus PaymentStatus { get; private set; }
         // Probably not the right value type for this
         // uint might be better and go for the lowest possible currency denomination
         // also JSON numerals have some caveats in terms of processing 
@@ -19,9 +19,10 @@ namespace CheckoutChallenge.Domain.PaymentAggregate
         // This can be split into 2 names, but has a lot of variants between different providers
         // In addition someplaces have title and initials - this might call for another value object
         public string NameOnCard { get; private set; }
-        public string CVV { get; }
-        public Guid MerchantId { get; }
+        public string CVV { get; private set; }
+        public Guid MerchantId { get; private set; }
 
+        private Payment() { }
         public Payment(string currency,
                        decimal amount,
                        string carduNumber,
@@ -71,6 +72,8 @@ namespace CheckoutChallenge.Domain.PaymentAggregate
 
             if (!(status is null))
                 PaymentStatus = status;
+            else
+                PaymentStatus = PaymentStatus.NotProcessed;
         }
 
         public Payment UpdateStatus(PaymentStatus status)

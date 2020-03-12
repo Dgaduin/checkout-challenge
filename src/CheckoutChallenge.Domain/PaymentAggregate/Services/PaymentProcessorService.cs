@@ -36,7 +36,7 @@ namespace CheckoutChallenge.Domain.PaymentAggregate.Services
 
             var updatedPayment = payment.UpdateStatus(paymentStatus);
 
-            _paymentRepository.Add(updatedPayment);
+            updatedPayment = _paymentRepository.Add(updatedPayment);
             await _paymentRepository.UnitOfWork.SaveChangesAsync().ConfigureAwait(false);
             return updatedPayment;
         }

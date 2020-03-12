@@ -10,6 +10,7 @@ namespace CheckoutChallenge.Domain.PaymentAggregate
         public static PaymentStatus Denied = new PaymentStatus(3, nameof(Denied).ToLowerInvariant());
         public static PaymentStatus DetailsNotRecognised = new PaymentStatus(4, nameof(DetailsNotRecognised).ToLowerInvariant());
         public static PaymentStatus ServiceError = new PaymentStatus(5, nameof(ServiceError).ToLowerInvariant());
+        public static PaymentStatus NotProcessed = new PaymentStatus(6, nameof(NotProcessed).ToLowerInvariant());
 #pragma warning restore MA0069
         public PaymentStatus(int id, string name) : base(id, name) { }
     }

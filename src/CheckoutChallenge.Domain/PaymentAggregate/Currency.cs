@@ -8,6 +8,8 @@ namespace CheckoutChallenge.Domain.PaymentAggregate
     public class Currency : ValueObject
     {
         public string Value { get; private set; }
+
+        private Currency() { }
         public Currency(string value)
         {
             if (value is null)
