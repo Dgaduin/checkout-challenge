@@ -1,0 +1,1 @@
+docker run -t checkout-challenge ./docker-images/Dockerfile ./
